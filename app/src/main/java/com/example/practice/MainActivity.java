@@ -1,5 +1,6 @@
 package com.example.practice;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 import static java.security.AccessController.getContext;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,9 +11,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +25,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,6 +39,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity{
+    GoogleSignInOptions gso;
+    GoogleSignInClient gsc;
+    ImageView googleBtn;
     EditText edit_text;
     ImageButton image_button;
     TextView text_view;
@@ -49,6 +61,23 @@ public class MainActivity extends AppCompatActivity{
         edit_text.setText(fName, TextView.BufferType.EDITABLE);
         image_button = (ImageButton)findViewById(R.id.imageButton);
         text_view = (TextView)findViewById(R.id.textView);
+        googleBtn = (ImageView) findViewById(R.id.google_btn);
+
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+        gsc = GoogleSignIn.getClient(MainActivity.this,gso);
+
+        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
+        if(acct!=null){
+            navigateToSecondActivity();
+        }
+
+
+        googleBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signIn();
+            }
+        });
         image_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -119,5 +148,29 @@ public class MainActivity extends AppCompatActivity{
                 startActivity(intent);
             }
         });
+    }
+    void signIn(){
+        Intent signInIntent = gsc.getSignInIntent();
+        startActivityForResult(signInIntent,1000);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode,Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 1000){
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            try {
+                task.getResult(ApiException.class);
+                navigateToSecondActivity();
+            } catch (ApiException e) {
+                Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
+            }
+        }
+
+    }
+    void navigateToSecondActivity(){
+        finish();
+        Intent intent = new Intent(MainActivity.this,GoogleSign.class);
+        startActivity(intent);
     }
 }
