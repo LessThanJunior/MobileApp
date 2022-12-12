@@ -43,22 +43,6 @@ public class MainActivity extends AppCompatActivity {
         edit_text.setText(fName, TextView.BufferType.EDITABLE);
         image_button = (ImageButton)findViewById(R.id.imageButton);
         text_view = (TextView)findViewById(R.id.textView);
-        edit_text.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                edit_text.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                edit_text.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                edit_text.setVisibility(View.VISIBLE);
-            }
-        });
         image_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
