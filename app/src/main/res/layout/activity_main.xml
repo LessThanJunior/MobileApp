@@ -10,10 +10,12 @@
   <com.google.android.material.textfield.TextInputEditText
       android:id="@+id/textInputEditText"
       android:layout_width="322dp"
-      android:layout_height="46dp"
+      android:layout_height="48dp"
       android:layout_marginTop="85dp"
       android:layout_marginBottom="600dp"
+      android:ems="10"
       android:hint="@string/get_the_city"
+      android:inputType="text"
       android:minHeight="48dp"
       android:textColor="#FFFFFF"
       android:textColorHint="#598884"
@@ -27,7 +29,7 @@
   <ImageButton
       android:id="@+id/imageButton"
       android:layout_width="55dp"
-      android:layout_height="45dp"
+      android:layout_height="48dp"
       android:layout_marginTop="85dp"
       android:layout_marginEnd="16dp"
       android:layout_marginBottom="598dp"
@@ -41,17 +43,14 @@
 
   <TextView
       android:id="@+id/textView"
-      android:layout_width="161dp"
-      android:layout_height="21dp"
+      android:layout_width="394dp"
+      android:layout_height="33dp"
       android:layout_marginStart="16dp"
       android:layout_marginTop="63dp"
-      android:layout_marginEnd="234dp"
       android:layout_marginBottom="518dp"
       android:text="Temperature: "
       android:textColor="#598884"
       app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintHorizontal_bias="0.0"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@+id/textInputEditText"
       app:layout_constraintVertical_bias="0.0" />
@@ -68,7 +67,24 @@
       android:textSize="20sp"
       app:layout_constraintBottom_toTopOf="@+id/textView"
       app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.0"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/textInputEditText" />
+      app:layout_constraintTop_toBottomOf="@+id/textInputEditText"
+      app:layout_constraintVertical_bias="1.0" />
+
+  <TextView
+      android:id="@+id/hourly_weather_info"
+      android:layout_width="match_parent"
+      android:layout_height="31dp"
+      android:layout_marginTop="23dp"
+      android:layout_marginBottom="450dp"
+      android:gravity="center"
+      android:text="3 Hourly Weather 5 Days"
+      android:textColor="#A1AA47"
+      android:textSize="20sp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/textView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

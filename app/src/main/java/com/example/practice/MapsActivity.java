@@ -38,8 +38,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private ActivityMapsBinding binding;
     public static final String EXTRA_CITY = "com.example.application.example.EXTRA_CITY";
     public String base_url = "https://api.openweathermap.org/geo/1.0/reverse"; //Geomapping
-    public String base_url2 = "https://api.openweathermap.org/data/2.5/weather"; //Current weather data
-    public String base_url3 = "https://api.openweathermap.org/data/2.5/forecast"; //every 3 hour weather data for 5 days
     public String url = ""; //Requested url
     public String appid = "af9814fdc4609639a202b3c81a7b5d0f";
     String mAddress = "";
