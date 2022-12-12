@@ -63,7 +63,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng point) {
-                MarkerOptions marker = new MarkerOptions().position(new LatLng(point.latitude, point.longitude)).title("New Marker");
+                MarkerOptions marker = new MarkerOptions().position(new LatLng(point.latitude, point.longitude));
                 googleMap.addMarker(marker);
                 url = base_url + "?lat=" + point.latitude + "&lon=" + point.longitude + "&limit=1&appid="+appid;
                 System.out.println(url);

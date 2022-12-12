@@ -1,6 +1,10 @@
 package com.example.practice;
 
+import static java.security.AccessController.getContext;
+
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,7 +27,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.ArrayList;
+
+public class MainActivity extends AppCompatActivity{
     EditText edit_text;
     ImageButton image_button;
     TextView text_view;
@@ -47,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 url_current = base_url_current + edit_text.getText().toString() + "&appid=" + appid + "&units=metric";
+                url_hourly = base_url_hourly + edit_text.getText().toString() + "&appid=" + appid + "&units=metric";
                 StringRequest stringRequest = new StringRequest(Request.Method.GET, url_current, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -58,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
                             JSONObject jsonWeatherObject = jsonWeatherArray.getJSONObject(0);
                             String weather_info = jsonWeatherObject.getString("main");
                             text_view.setText("Temperature: " + temp + "°С, " + weather_info);
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -68,9 +76,47 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this, error.toString().trim(), Toast.LENGTH_SHORT).show();
                     }
                 });
+                StringRequest hourlyRequest = new StringRequest(Request.Method.GET, url_hourly, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        ArrayList<ItemWeather> weatherList = new ArrayList<>();
+                        try {
+                            JSONObject jsonResponseHourly = new JSONObject(response);
+                            JSONArray getWeatherList = jsonResponseHourly.getJSONArray("list");
+                            for (int i = 0; i < 40; i++) {
+                                JSONObject getWeather = getWeatherList.getJSONObject(i);
+                                JSONObject getMain = getWeather.getJSONObject("main");
+                                System.out.println(getMain);
+                                double temp_hourly = getMain.getDouble("temp");
+                                String time = getWeather.getString("dt_txt");
+                                ItemWeather weather = new ItemWeather();
+                                weather.setTemp(temp_hourly);
+                                weather.setTime(time);
+                                weatherList.add(weather);
+                            }
+                            ItemWeatherRecyclerView weatherRecyclerView = new ItemWeatherRecyclerView(weatherList);
+                            RecyclerView recyclerView = findViewById(R.id.rvWeather);
+                            recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                            recyclerView.setAdapter(weatherRecyclerView);
+                        } catch(JSONException e) {e.printStackTrace();}
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(MainActivity.this, error.toString().trim(), Toast.LENGTH_SHORT).show();
+                    }
+                });
                 RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
                 requestQueue.add(stringRequest);
-
+                requestQueue.add(hourlyRequest);
+            }
+        });
+        ImageButton googleMapButton = (ImageButton)findViewById(R.id.googleMapButton);
+        googleMapButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this,MapsActivity.class);
+                startActivity(intent);
             }
         });
     }
