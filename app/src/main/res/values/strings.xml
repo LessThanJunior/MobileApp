@@ -2,4 +2,7 @@
     <string name="app_name">Practice</string>
     <string name="title_activity_maps">MapsActivity</string>
     <string name="get_the_city">Get the city</string>
+    <string name="facebook_app_id">1354073625161930</string>
+    <string name="fb_login_protocol_scheme">fb1354073625161930</string>
+    <string name="facebook_client_token">118410fd5733f0afb622a2ea5582d783</string>
 </resources>
